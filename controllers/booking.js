@@ -25,10 +25,10 @@ router.post('/', verifyToken, async (req, res) => {
 });
 
 // Get bookings for the logged-in user
-router.get('/', verifyToken, async (req, res) => {
+router.get('/me', verifyToken, async (req, res) => {
     try {
-        const foundBookings = await Booking.find({user: req.user.id});
-        res.status(200).json({ foundBookings });
+        const bookings = await Booking.find({user: req.user.id}).populate('trip');
+        res.status(200).json({ bookings });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Failed to fetch bookings' });

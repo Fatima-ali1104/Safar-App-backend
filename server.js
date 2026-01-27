@@ -3,8 +3,8 @@ dotenv.config();
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
-// const cors = require('cors');
-// const logger = require('morgan');
+const cors = require('cors');
+const logger = require('morgan');
 
 // Models
 const User = require('./models/user');
@@ -33,10 +33,10 @@ mongoose.connection.on('connected', () => {
 });
 
 // Middleware setup
-// app.use(cors());
+app.use(cors());
 app.use(express.json());
 //app.use(express.urlencoded({ extended: true }));
-//app.use(logger('dev'));
+app.use(logger('dev'));
 
 // Public Routes
 app.use('/auth', authCtrl);

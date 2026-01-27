@@ -4,6 +4,16 @@ const Trip = require('../models/Trip');
 const {isAdmin, isTripOwner} = require("../middleware/access-control");
 const verifyToken = require("../middleware/verify-token");
 
+router.get('/', verifyToken, async (req, res) => {
+    try{
+        const currentUser = req.user;
+        const trips = await Trip.find().sort({ createdAt: -1 });
+        res.status(200).json({ trips });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Failed to load trips' });
+    }
+});
 router.post('/', verifyToken,isAdmin, async (req, res) => {
     try {
     const currentUser = req.user;
@@ -37,16 +47,6 @@ router.post('/', verifyToken,isAdmin, async (req, res) => {
 });
 
 //index
-router.get('/', verifyToken, async (req, res) => {
-    try{
-        const currentUser = req.user;
-        const trips = await Trip.find().sort({ createdAt: -1 });
-        res.status(200).json({ trips });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Failed to load trips' });
-    }
-});
 
 //show
 router.get('/:id', verifyToken, async (req, res) => {
