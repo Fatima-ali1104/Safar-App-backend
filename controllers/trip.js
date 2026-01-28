@@ -4,6 +4,7 @@ const Trip = require('../models/Trip');
 const {isAdmin, isTripOwner} = require("../middleware/access-control");
 const verifyToken = require("../middleware/verify-token");
 
+
 router.get('/', verifyToken, async (req, res) => {
     try{
         const currentUser = req.user;
@@ -18,25 +19,25 @@ router.post('/', verifyToken,isAdmin, async (req, res) => {
     try {
     const currentUser = req.user;
 
-    let images = [];
+    // let images = [];
 
-    if (req.body.images) {
-      if (Array.isArray(req.body.images)) {
-        images = req.body.images;
-      } else {
-        images = [req.body.images];
-      }
-    }
-    if (images.length === 0) {
-      return res.status(400).json({ error: "At least one image is required" });
-    }
+    // if (req.body.images) {
+    //   if (Array.isArray(req.body.images)) {
+    //     images = req.body.images;
+    //   } else {
+    //     images = [req.body.images];
+    //   }
+    // }
+    // if (images.length === 0) {
+    //   return res.status(400).json({ error: "At least one image is required" });
+    // }
     const newTrip = await Trip.create({
         title: req.body.title,
         destination: req.body.destination,
         days: req.body.days,
         hotel: req.body.hotel,
         price: req.body.price,
-        images: images,
+        images: req.body.images,
         createdBy: currentUser.id
     });
     res.status(201).json({ Trip: newTrip });
@@ -73,8 +74,8 @@ router.put('/:id', verifyToken, isTripOwner, async (req, res) => {
                 price: req.body.price,
                 images: req.body.images
             };
-            if (req.body.images) {
-                updatedTrip.images = Array.isArray(req.body.images) ? req.body.images : [req.body.images];}
+            // if (req.body.images) {
+            //     updatedTrip.images = Array.isArray(req.body.images) ? req.body.images : [req.body.images];}
                 const updatedTripResult = await Trip.findByIdAndUpdate(req.params.id, updatedTrip, { new: true });
 
         res.status(200).json({ trip: updatedTripResult });

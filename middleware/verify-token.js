@@ -11,7 +11,7 @@ const verifyToken = (req, res, next) => {
       return res.status(401).json({ err: 'Invalid token format' });
     }
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded.payload;
+    req.user = decoded;
     console.log("AUTH USER:", req.user);
     next();
   } catch (err) {

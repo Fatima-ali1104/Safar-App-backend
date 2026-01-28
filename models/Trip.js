@@ -21,10 +21,10 @@ const tripSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
-  images: [{
+  images:{
     type: String,
-    required: true
-  }],
+    // required: true
+  },
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
